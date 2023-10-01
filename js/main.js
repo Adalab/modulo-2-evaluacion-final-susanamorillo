@@ -61,16 +61,12 @@ function paintCard(showArray, showListHtml) {
 
 function getShowHtml(show) {
   const name = show.name;
+  const summary = show.summary;
+  const id = show.id;
   const image =
     show.image?.medium ||
     'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
-  const id = show.id;
   const genres = show.genres;
-
-  let genre = '';
-  for (let item of genres) {
-    genre += item + ' ';
-  }
 
   //   let imageUrl = '';
   //   if (image) {
@@ -87,9 +83,22 @@ function getShowHtml(show) {
   if (favoriteShowFound !== -1) {
     liFavorites += 'chosenCard';
   }
-  return `<liFavorites class="listFavorites"${liFavorites}"id="${id}">
-  <img id=${id} class ="card" src="${image}"></li>
-  <h3 class= "title">${name}</h3>`;
+  let genre = '';
+  for (let item of genres) {
+    genre += item + ' ';
+  }
+  if (genre == '') genre = 'Sin clasificar';
+
+  return `<div class="cardBox">
+      <div class="tittleBox">${name}</div>
+      <div class="bodyBox">
+      <img id=${id} class ="card" src="${image}"alt="${name}">
+      <p class="summary">${summary}</p>
+      </div>
+      <div class="footerBox">
+      <h3>${genre}</h3>
+    </div>
+  </div>`;
 }
 
 //Evento para cada tarjeta que se dibuja en pantalla
