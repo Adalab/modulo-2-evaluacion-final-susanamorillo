@@ -139,9 +139,6 @@ function updateFavList(clickedObject) {
     favoritesShow.splice(favoriteShowFound, 1);
   }
 }
-function deleteShow(a, b) {
-  console.log('hola Susana');
-}
 
 function handleClickDelete(ev, deleteListHtml) {
   const deleteShowHtml = deleteListHtml.querySelectorAll('.delete');
