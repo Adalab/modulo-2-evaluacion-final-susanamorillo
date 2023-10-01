@@ -6,10 +6,12 @@
 }
 
 
-.list {
+
+
+.container {
     display: flex;
     list-style: none;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-between;
+
+
 }

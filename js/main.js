@@ -1,6 +1,6 @@
 'use strict';
 
-//Traigo las constantes del HTML
+//Traigo las elementos del HTML
 
 const btnSearch = document.querySelector('.js-btnSearch');
 const showList = document.querySelector('.js-list');
@@ -24,6 +24,7 @@ function showResults() {
       for (let items of results) {
         const show = items.show;
         showTv.push(show);
+        //  localStorage.setItem('show', JSON.stringify(showTv));
       }
 
       //funcion que pinta la lista de las series
@@ -33,7 +34,7 @@ function showResults() {
 
 //Funcion al darle click al botón BUSCAR
 
-function handleClick(event) {
+function handleClickSearch(event) {
   event.preventDefault();
   showResults();
 }
@@ -59,11 +60,11 @@ function paintCard(showArray, showListHtml) {
 //para pintar el html
 
 function getShowHtml(show) {
-  // console.log(show);
-
   const name = show.name;
-  const image = show.image;
-  const id = show.image;
+  const image =
+    show.image?.medium ||
+    'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
+  const id = show.id;
   const genres = show.genres;
 
   let genre = '';
@@ -71,14 +72,12 @@ function getShowHtml(show) {
     genre += item + ' ';
   }
 
-  console.log(genres);
-
-  let imageUrl = '';
-  if (image) {
-    imageUrl = image.medium;
-  } else {
-    imageUrl = 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
-  }
+  //   let imageUrl = '';
+  //   if (image) {
+  //     imageUrl = image.medium;
+  //   } else {
+  //     imageUrl = 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
+  //   }
 
   let liFavorites = 'card liItem';
   const favoriteShowFound = favoritesShow.findIndex((favorite) => {
@@ -88,9 +87,9 @@ function getShowHtml(show) {
   if (favoriteShowFound !== -1) {
     liFavorites += 'chosenCard';
   }
-  return `<liFavorites="${liFavorites}"id="${id}">
-  <h3 class >${name}</h3>
-  <img src="${imageUrl}"></li>`;
+  return `<liFavorites class="listFavorites"${liFavorites}"id="${id}">
+  <img id=${id} class ="card" src="${image}"></li>
+  <h3 class= "title">${name}</h3>`;
 }
 
 //Evento para cada tarjeta que se dibuja en pantalla
@@ -99,6 +98,7 @@ function addHandlerList(showArray, showListHtml) {
   const allShowHtml = showListHtml.querySelectorAll('.card');
   for (let card of allShowHtml) {
     card.addEventListener('click', (event) => {
+      console.log('card', allShowHtml);
       handleClickScreen(event, showArray);
     });
   }
@@ -107,29 +107,42 @@ function addHandlerList(showArray, showListHtml) {
 //Funcion para cada uno de los objetos show
 
 function handleClickScreen(ev, showArray) {
-  const clickedLi = ev.currentTarget.id; //escucha el evento
-  const clickedId = parseInt(clickedLi.id);
+  const clickedLi = ev.currentTarget.id; // aisgna el valor del id a la variable
+  const clickedId = parseInt(clickedLi);
   const clickedObject = showArray.find((show) => {
     return show.id === clickedId;
   });
 
-  updateFavList(clickedShow);
+  updateFavList(clickedObject);
   paintCard(favoritesShow, favList);
   paintCard(showTv, showList);
 
   localStorage.setItem('favoritesShow', JSON.stringify(favoritesShow));
 }
 
-function updateFavList(clickedShow) {
+function updateFavList(clickedObject) {
   const favoriteShowFound = favoritesShow.findIndex((favorite) => {
-    return favorite.id === clickedShow.id;
+    return favorite.id === clickedObject.id;
   });
   if (favoriteShowFound === -1) {
-    favoritesShow.push(clickedShow);
+    favoritesShow.push(clickedObject);
   } else {
     favoritesShow.splice(favoriteShowFound, 1);
   }
 }
+function deleteShow(a, b) {
+  console.log('hola Susana');
+}
+
+function handleClickDelete(ev, deleteListHtml) {
+  const deleteShowHtml = deleteListHtml.querySelectorAll('.delete');
+  for (let item of deleteShowHtml) {
+    item.addEventListener('click', (event) => {
+      deleteShow(event, deleteListHtml);
+    });
+  }
+}
+
 favoritesResults();
 
-btnSearch.addEventListener('click', handleClick);
+btnSearch.addEventListener('click', handleClickSearch);
