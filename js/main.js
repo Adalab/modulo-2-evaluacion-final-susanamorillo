@@ -6,7 +6,7 @@ const btnSearch = document.querySelector('.js-btnSearch');
 const showList = document.querySelector('.js-list');
 const inputSearch = document.querySelector('.js-search');
 const favList = document.querySelector('.js-listFavorites');
-
+const btnLog = document.querySelector('.js-btnLog');
 //VARIABLES
 //1.- Resultados de la búsqueda
 let showTv = [];
@@ -38,7 +38,7 @@ function handleClickSearch(event) {
   event.preventDefault();
   showResults();
 }
-//2- para guardar las favoritas de la usuaria
+//2- para obtener las favoritas de la usuaria
 function favoritesResults() {
   const savedFavorites = localStorage.getItem('favoritesShow');
   if (savedFavorites) {
@@ -57,11 +57,12 @@ function paintCard(showArray, showListHtml) {
   addHandlerList(showArray, showListHtml);
 }
 
-//para pintar el html
+//para pintar
 
 function getShowHtml(show) {
   const name = show.name;
   const summary = show.summary;
+  const status = show.status;
   const id = show.id;
   const image =
     show.image?.medium ||
@@ -93,7 +94,7 @@ function getShowHtml(show) {
       <div class="tittleBox">${name}</div>
       <div class="bodyBox">
       <img id=${id} class ="card" src="${image}"alt="${name}">
-      <p class="summary">${summary}</p>
+      <p class="summary">${summary} ${status}</p>
       </div>
       <div class="footerBox">
       <h3>${genre}</h3>
@@ -152,3 +153,9 @@ function handleClickDelete(ev, deleteListHtml) {
 favoritesResults();
 
 btnSearch.addEventListener('click', handleClickSearch);
+btnLog.addEventListener('click', (event) => {
+  event.preventDefault();
+  for (let item of favoritesShow) {
+    console.log(item.name);
+  }
+});
